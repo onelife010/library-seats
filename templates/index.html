@@ -6,24 +6,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-  <h1 class="text-3xl font-bold mb-6 text-center text-blue-800">📚 Library Seat Map</h1>
+  <h1 class="text-3xl font-bold mb-4 text-center text-blue-800">📚 Library Seat Map</h1>
 
-  <!-- Bilingual Instructional Message -->
-  <p class="text-center text-lg font-medium text-gray-700 mb-6 px-4">
-    <span class="block">📢 When you enter the library, mark your seat. When you leave, unmark the seat so someone else can use that time to learn. Thank you for your efforts! 🙏</span>
-    <span class="block mt-2 text-[17px] text-gray-800">📢 जब आप लाइब्रेरी में प्रवेश करें, तो अपनी सीट को मार्क करें और जब आप जाएं तो सीट को अनमार्क करें ताकि कोई और उस समय का उपयोग करके कुछ नया सीख सके। आपके प्रयासों के लिए धन्यवाद! 🙏</span>
+  <p class="text-center text-gray-700 mb-6">
+    <strong class="block mb-1">📌 When you enter the library, mark your seat. When you leave, unmark it so that others can use the seat to learn something. Thank you for your efforts!</strong>
+    <span class="text-sm text-gray-600">📌 जब आप लाइब्रेरी में प्रवेश करें तो अपनी सीट को चिह्नित करें और जब बाहर जाएं तो उसे अनचेक करें ताकि कोई और उसका उपयोग कर सके। आपके प्रयासों के लिए धन्यवाद।</span>
   </p>
 
-  <!-- Reset Button -->
-  <div class="text-center mb-6">
-    <form action="/reset" method="POST">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow">
-        🔁 Reset All Seats
-      </button>
-    </form>
-  </div>
-
-  <!-- Seat Grid -->
   <div id="seats" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
     {% for seat in seats %}
       <div 
@@ -33,22 +22,39 @@
         data-status="{{ seat.status }}"
       >
         <p class="text-lg font-semibold">Seat {{ seat.id }}</p>
-        <div 
-          class="mt-2 px-4 py-2 rounded seat-btn font-bold text-white 
-                  {% if seat.status == 'available' %}bg-green-600{% else %}bg-red-600{% endif %}">
-          {% if seat.status == 'available' %}Seat Available{% else %}Seat Not Available{% endif %}
-        </div>
+        <span class="block mt-2 font-bold 
+              {% if seat.status == 'available' %}text-green-800{% else %}text-red-800{% endif %}">
+          {% if seat.status == 'available' %}✅ Seat Available{% else %}⛔ Seat Not Available{% endif %}
+        </span>
       </div>
     {% endfor %}
   </div>
 
+  <!-- Reset Form -->
+  <div class="text-center mt-8">
+    <form method="POST" action="/reset" onsubmit="return confirmReset();">
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="Enter admin password" 
+        required
+        class="px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring"
+      />
+      <button 
+        type="submit" 
+        class="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+      >
+        Reset All Seats
+      </button>
+    </form>
+  </div>
+
   <script>
     document.querySelectorAll(".seat-box").forEach(box => {
-      box.querySelector(".seat-btn").addEventListener("click", async (e) => {
-        e.preventDefault();
-
+      box.addEventListener("click", async () => {
         const seatId = box.dataset.id;
         const currentStatus = box.dataset.status;
+
         const endpoint = currentStatus === "available" ? `/checkin/${seatId}` : `/free/${seatId}`;
         const res = await fetch(endpoint, { method: "POST" });
 
@@ -56,17 +62,20 @@
           const newStatus = currentStatus === "available" ? "occupied" : "available";
           box.dataset.status = newStatus;
 
-          // Toggle colors
           box.classList.toggle("bg-green-200");
           box.classList.toggle("bg-red-300");
 
-          const btn = box.querySelector(".seat-btn");
-          btn.classList.toggle("bg-green-600");
-          btn.classList.toggle("bg-red-600");
-          btn.innerText = newStatus === "available" ? "Seat Available" : "Seat Not Available";
+          const statusText = box.querySelector("span");
+          statusText.innerText = newStatus === "available" ? "✅ Seat Available" : "⛔ Seat Not Available";
+          statusText.classList.toggle("text-green-800");
+          statusText.classList.toggle("text-red-800");
         }
       });
     });
+
+    function confirmReset() {
+      return confirm("Are you sure you want to reset all seats?");
+    }
   </script>
 </body>
 </html>
