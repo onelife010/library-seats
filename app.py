@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import json
-import os  # Added for dynamic port
+import os
 
 app = Flask(__name__)
 
@@ -19,21 +19,26 @@ def index():
     seats = load_seats()
     return render_template('index.html', seats=seats)
 
-@app.route('/update_seat', methods=['POST'])
-def update_seat():
-    data = request.json
-    seat_id = data['seat_id']
-    status = data['status']
-
+@app.route('/checkin/<seat_id>', methods=['POST'])
+def checkin(seat_id):
     seats = load_seats()
     for seat in seats:
         if seat['id'] == seat_id:
-            seat['status'] = status
+            seat['status'] = 'occupied'
             break
     save_seats(seats)
-    return jsonify({'success': True})
+    return render_template('index.html', seats=seats)
+
+@app.route('/free/<seat_id>', methods=['POST'])
+def free(seat_id):
+    seats = load_seats()
+    for seat in seats:
+        if seat['id'] == seat_id:
+            seat['status'] = 'available'
+            break
+    save_seats(seats)
+    return render_template('index.html', seats=seats)
 
 if __name__ == "__main__":
-    # Use dynamic port for Render, fallback to 5000 locally
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
