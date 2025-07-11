@@ -1,242 +1,62 @@
-{
-    "1": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:11.234328"
-    },
-    "2": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "3": {
-        "status": "available",
-        "last_updated": "2025-07-11 13:18:43.114302"
-    },
-    "4": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:24:18.601008"
-    },
-    "5": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:24:21.322723"
-    },
-    "6": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "7": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:13.227477"
-    },
-    "8": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:14.646635"
-    },
-    "9": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:24:06.733130"
-    },
-    "10": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "11": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:48:50.530910"
-    },
-    "12": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "13": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "14": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:16.185774"
-    },
-    "15": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:17.286647"
-    },
-    "16": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "17": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:48:52.049605"
-    },
-    "18": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "19": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "20": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "21": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "22": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:18.809634"
-    },
-    "23": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "24": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "25": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "26": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "27": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "28": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "29": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:26.627607"
-    },
-    "30": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "31": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "32": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "33": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:24:03.695129"
-    },
-    "34": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "35": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "36": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:29.131967"
-    },
-    "37": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "38": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "39": {
-        "status": "available",
-        "last_updated": "2025-07-11 13:18:18.823918"
-    },
-    "40": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "41": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "42": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "43": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "44": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "45": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "46": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "47": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:48:54.093469"
-    },
-    "48": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "49": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "50": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "51": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "52": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "53": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "54": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "55": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "56": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "57": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "58": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "59": {
-        "status": "available",
-        "last_updated": ""
-    },
-    "60": {
-        "status": "occupied",
-        "last_updated": "2025-07-11 13:23:45.750046"
-    }
-}
+[
+  { "id": 1, "status": "available" },
+  { "id": 2, "status": "available" },
+  { "id": 3, "status": "available" },
+  { "id": 4, "status": "available" },
+  { "id": 5, "status": "available" },
+  { "id": 6, "status": "available" },
+  { "id": 7, "status": "available" },
+  { "id": 8, "status": "available" },
+  { "id": 9, "status": "available" },
+  { "id": 10, "status": "available" },
+  { "id": 11, "status": "available" },
+  { "id": 12, "status": "available" },
+  { "id": 13, "status": "available" },
+  { "id": 14, "status": "available" },
+  { "id": 15, "status": "available" },
+  { "id": 16, "status": "available" },
+  { "id": 17, "status": "available" },
+  { "id": 18, "status": "available" },
+  { "id": 19, "status": "available" },
+  { "id": 20, "status": "available" },
+  { "id": 21, "status": "available" },
+  { "id": 22, "status": "available" },
+  { "id": 23, "status": "available" },
+  { "id": 24, "status": "available" },
+  { "id": 25, "status": "available" },
+  { "id": 26, "status": "available" },
+  { "id": 27, "status": "available" },
+  { "id": 28, "status": "available" },
+  { "id": 29, "status": "available" },
+  { "id": 30, "status": "available" },
+  { "id": 31, "status": "available" },
+  { "id": 32, "status": "available" },
+  { "id": 33, "status": "available" },
+  { "id": 34, "status": "available" },
+  { "id": 35, "status": "available" },
+  { "id": 36, "status": "available" },
+  { "id": 37, "status": "available" },
+  { "id": 38, "status": "available" },
+  { "id": 39, "status": "available" },
+  { "id": 40, "status": "available" },
+  { "id": 41, "status": "available" },
+  { "id": 42, "status": "available" },
+  { "id": 43, "status": "available" },
+  { "id": 44, "status": "available" },
+  { "id": 45, "status": "available" },
+  { "id": 46, "status": "available" },
+  { "id": 47, "status": "available" },
+  { "id": 48, "status": "available" },
+  { "id": 49, "status": "available" },
+  { "id": 50, "status": "available" },
+  { "id": 51, "status": "available" },
+  { "id": 52, "status": "available" },
+  { "id": 53, "status": "available" },
+  { "id": 54, "status": "available" },
+  { "id": 55, "status": "available" },
+  { "id": 56, "status": "available" },
+  { "id": 57, "status": "available" },
+  { "id": 58, "status": "available" },
+  { "id": 59, "status": "available" },
+  { "id": 60, "status": "available" }
+]
