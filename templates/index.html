@@ -6,18 +6,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-  <h1 class="text-2xl font-bold mb-4 text-center">📚 Library Seat Map</h1>
+  <h1 class="text-2xl font-bold mb-6 text-center text-blue-900">📚 Library Seat Map</h1>
 
   <div id="seats" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
     {% for seat in seats %}
       <div 
-        class="p-4 rounded-lg shadow text-center cursor-pointer seat-box 
+        class="p-5 rounded-xl shadow-lg text-center cursor-pointer transition seat-box 
                {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}" 
         data-id="{{ seat.id }}" 
         data-status="{{ seat.status }}"
       >
-        <p class="text-lg font-semibold">Seat {{ seat.id }}</p>
-        <p class="status-label text-sm font-medium mt-2">
+        <p class="text-xl font-bold text-gray-800 mb-2">Seat {{ seat.id }}</p>
+        <p class="status-label text-lg font-semibold 
+                  {% if seat.status == 'available' %}text-green-800{% else %}text-red-800{% endif %}">
           {% if seat.status == 'available' %}
             ✅ Seat Available
           {% else %}
@@ -33,21 +34,22 @@
       box.addEventListener("click", async () => {
         const seatId = box.dataset.id;
         const currentStatus = box.dataset.status;
-
         const endpoint = currentStatus === "available" ? `/checkin/${seatId}` : `/free/${seatId}`;
+        
         const res = await fetch(endpoint, { method: "POST" });
-
         if (res.ok) {
           const newStatus = currentStatus === "available" ? "occupied" : "available";
           box.dataset.status = newStatus;
 
-          // Toggle background colors
+          // Toggle background color
           box.classList.toggle("bg-green-200");
           box.classList.toggle("bg-red-300");
 
-          // Update status label
+          // Update text and color
           const label = box.querySelector(".status-label");
           label.innerText = newStatus === "available" ? "✅ Seat Available" : "❌ Seat Not Available";
+          label.classList.toggle("text-green-800");
+          label.classList.toggle("text-red-800");
         }
       });
     });
