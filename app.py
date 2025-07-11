@@ -1,31 +1,47 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, request, redirect, url_for
+import json
+import os
 
 app = Flask(__name__)
 
-# In-memory seat data (resets every time the app restarts)
-seats = [{"id": i + 1, "status": "available"} for i in range(60)]
+# Load seats once into memory
+SEATS_FILE = "seats.json"
+seats_data = []
 
-@app.route('/')
+def load_seats():
+    global seats_data
+    with open(SEATS_FILE, "r") as f:
+        seats_data = json.load(f)
+
+def save_seats():
+    with open(SEATS_FILE, "w") as f:
+        json.dump(seats_data, f, indent=2)
+
+# Load seats at app startup
+load_seats()
+
+@app.route("/")
 def index():
-    return render_template('index.html', seats=seats)
+    return render_template("index.html", seats=seats_data)
 
-@app.route('/checkin/<int:seat_id>', methods=['POST'])
+@app.route("/checkin/<int:seat_id>", methods=["POST"])
 def checkin(seat_id):
-    for seat in seats:
-        if seat['id'] == seat_id:
-            seat['status'] = 'occupied'
+    for seat in seats_data:
+        if seat["id"] == seat_id:
+            seat["status"] = "occupied"
             break
-    return redirect(url_for('index'))
+    save_seats()
+    return redirect(url_for("index"))
 
-@app.route('/free/<int:seat_id>', methods=['POST'])
+@app.route("/free/<int:seat_id>", methods=["POST"])
 def free(seat_id):
-    for seat in seats:
-        if seat['id'] == seat_id:
-            seat['status'] = 'available'
+    for seat in seats_data:
+        if seat["id"] == seat_id:
+            seat["status"] = "available"
             break
-    return redirect(url_for('index'))
+    save_seats()
+    return redirect(url_for("index"))
 
-if __name__ == '__main__':
-    import os
+if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host="0.0.0.0", port=port)
