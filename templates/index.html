@@ -11,13 +11,21 @@
   <div id="seats" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
     {% for seat in seats %}
       <div 
-        class="p-4 rounded-lg shadow text-center cursor-pointer seat-box {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}" 
+        class="p-4 rounded-lg shadow text-center cursor-pointer seat-box 
+               {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}" 
         data-id="{{ seat.id }}" 
         data-status="{{ seat.status }}"
       >
         <p class="text-lg font-semibold">Seat {{ seat.id }}</p>
+        <p class="status-label text-sm font-medium mb-2">
+          {% if seat.status == 'available' %}
+            ✅ Seat Available
+          {% else %}
+            ❌ Seat Not Available
+          {% endif %}
+        </p>
         <button 
-          class="mt-2 px-4 py-2 text-white rounded seat-btn 
+          class="px-4 py-2 text-white rounded seat-btn 
                  {% if seat.status == 'available' %}bg-green-600{% else %}bg-red-600{% endif %}">
           {% if seat.status == 'available' %}Check In{% else %}Free{% endif %}
         </button>
@@ -41,14 +49,19 @@
           const newStatus = currentStatus === "available" ? "occupied" : "available";
           box.dataset.status = newStatus;
 
-          // Update colors
+          // Toggle box color
           box.classList.toggle("bg-green-200");
           box.classList.toggle("bg-red-300");
 
+          // Toggle button color and text
           const btn = box.querySelector(".seat-btn");
           btn.classList.toggle("bg-green-600");
           btn.classList.toggle("bg-red-600");
           btn.innerText = newStatus === "available" ? "Check In" : "Free";
+
+          // Update label
+          const label = box.querySelector(".status-label");
+          label.innerText = newStatus === "available" ? "✅ Seat Available" : "❌ Seat Not Available";
         }
       });
     });
