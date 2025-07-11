@@ -6,46 +6,56 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-  <h1 class="text-2xl font-bold mb-6 text-center text-blue-900">📚 Library Seat Map</h1>
+  <h1 class="text-3xl font-bold mb-6 text-center text-blue-800">📚 Library Seat Map</h1>
+
+  <div class="text-center mb-6">
+    <button id="resetBtn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md">
+      🔄 Reset All Seats
+    </button>
+  </div>
 
   <div id="seats" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
     {% for seat in seats %}
       <div 
-        class="p-5 rounded-xl shadow-lg text-center cursor-pointer transition seat-box 
+        class="p-4 rounded-lg shadow text-center cursor-pointer seat-box 
                {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}" 
         data-id="{{ seat.id }}" 
         data-status="{{ seat.status }}"
       >
-        <p class="text-xl font-bold text-gray-800 mb-2">Seat {{ seat.id }}</p>
-        <p class="status-label text-lg font-semibold 
-                  {% if seat.status == 'available' %}text-green-800{% else %}text-red-800{% endif %}">
-          {% if seat.status == 'available' %}
-            ✅ Seat Available
-          {% else %}
-            ❌ Seat Not Available
-          {% endif %}
-        </p>
+        <p class="text-lg font-semibold mb-2">Seat {{ seat.id }}</p>
+        <span class="status-label font-bold 
+                     {% if seat.status == 'available' %}text-green-800{% else %}text-red-800{% endif %}">
+          {% if seat.status == 'available' %}✅ Seat Available{% else %}❌ Seat Not Available{% endif %}
+        </span>
       </div>
     {% endfor %}
   </div>
 
   <script>
+    document.getElementById("resetBtn").addEventListener("click", async () => {
+      const confirmed = confirm("Are you sure you want to reset all seats to available?");
+      if (!confirmed) return;
+
+      const res = await fetch("/reset", { method: "POST" });
+      if (res.ok) {
+        location.reload();
+      }
+    });
+
     document.querySelectorAll(".seat-box").forEach(box => {
       box.addEventListener("click", async () => {
         const seatId = box.dataset.id;
         const currentStatus = box.dataset.status;
         const endpoint = currentStatus === "available" ? `/checkin/${seatId}` : `/free/${seatId}`;
-        
+
         const res = await fetch(endpoint, { method: "POST" });
         if (res.ok) {
           const newStatus = currentStatus === "available" ? "occupied" : "available";
           box.dataset.status = newStatus;
 
-          // Toggle background color
           box.classList.toggle("bg-green-200");
           box.classList.toggle("bg-red-300");
 
-          // Update text and color
           const label = box.querySelector(".status-label");
           label.innerText = newStatus === "available" ? "✅ Seat Available" : "❌ Seat Not Available";
           label.classList.toggle("text-green-800");
