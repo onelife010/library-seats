@@ -4,22 +4,32 @@ import os
 
 app = Flask(__name__)
 
+SEAT_FILE = "seats.json"
+RESET_PASSWORD = os.environ.get("RESET_PASSWORD", "admin123")  # Secure default
+
+
 # Load seat data from JSON
 def load_seats():
-    if not os.path.exists("seats.json"):
+    if not os.path.exists(SEAT_FILE):
         return []
-    with open("seats.json", "r") as f:
-        return json.load(f)
+    try:
+        with open(SEAT_FILE, "r") as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
+
 
 # Save seat data to JSON
 def save_seats(seats):
-    with open("seats.json", "w") as f:
+    with open(SEAT_FILE, "w") as f:
         json.dump(seats, f, indent=2)
+
 
 @app.route('/')
 def index():
     seats = load_seats()
     return render_template('index.html', seats=seats)
+
 
 @app.route('/checkin/<int:seat_id>', methods=['POST'])
 def checkin(seat_id):
@@ -27,9 +37,10 @@ def checkin(seat_id):
     for seat in seats:
         if seat['id'] == seat_id:
             seat['status'] = 'occupied'
-            break
-    save_seats(seats)
-    return jsonify({'success': True})
+            save_seats(seats)
+            return jsonify({'success': True}), 200
+    return jsonify({'success': False, 'message': 'Seat not found'}), 404
+
 
 @app.route('/free/<int:seat_id>', methods=['POST'])
 def free(seat_id):
@@ -37,21 +48,22 @@ def free(seat_id):
     for seat in seats:
         if seat['id'] == seat_id:
             seat['status'] = 'available'
-            break
-    save_seats(seats)
-    return jsonify({'success': True})
+            save_seats(seats)
+            return jsonify({'success': True}), 200
+    return jsonify({'success': False, 'message': 'Seat not found'}), 404
 
-@app.route('/reset', methods=['POST'])
+
+@app.route("/reset", methods=["POST"])
 def reset():
-    password = request.form.get('password')
-    if password == "admin123":  # Change to your desired password
-        seats = load_seats()
-        for seat in seats:
-            seat['status'] = 'available'
+    password = request.form.get("password")
+    if password == RESET_PASSWORD:
+        seats = [{"id": i, "status": "available"} for i in range(1, 61)]  # Reset 60 seats
         save_seats(seats)
-        return redirect(url_for('index'))  # Redirect back to home after reset
+        return redirect("/")
     else:
-        return "Unauthorized", 403
+        return "Incorrect password", 403
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
