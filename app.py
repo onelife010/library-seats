@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import json
 import os
 
@@ -6,6 +6,8 @@ app = Flask(__name__)
 
 # Load seat data from JSON
 def load_seats():
+    if not os.path.exists("seats.json"):
+        return []
     with open("seats.json", "r") as f:
         return json.load(f)
 
@@ -41,12 +43,15 @@ def free(seat_id):
 
 @app.route('/reset', methods=['POST'])
 def reset():
-    seats = load_seats()
-    for seat in seats:
-        seat['status'] = 'available'
-    save_seats(seats)
-    return jsonify({'success': True})
+    password = request.form.get('password')
+    if password == "admin123":  # Change to your desired password
+        seats = load_seats()
+        for seat in seats:
+            seat['status'] = 'available'
+        save_seats(seats)
+        return redirect(url_for('index'))  # Redirect back to home after reset
+    else:
+        return "Unauthorized", 403
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
