@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import json
+import os  # Added for dynamic port
 
 app = Flask(__name__)
 
@@ -33,5 +34,6 @@ def update_seat():
     return jsonify({'success': True})
 
 if __name__ == "__main__":
-    # Use 0.0.0.0 so it can be accessed externally (required for deployment)
-    app.run(host="0.0.0.0", port=5000)
+    # Use dynamic port for Render, fallback to 5000 locally
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
