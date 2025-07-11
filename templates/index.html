@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -9,11 +9,11 @@
   <h1 class="text-2xl font-bold mb-4 text-center">📚 Library Seat Map</h1>
 
   <div class="grid grid-cols-6 gap-4 max-w-4xl mx-auto">
-    {% for id, seat in seats.items() %}
+    {% for seat in seats %}
       <div class="p-4 rounded-lg shadow text-center 
                   {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}">
-        <p class="text-lg font-semibold">Seat {{ id }}</p>
-        <form method="POST" action="{% if seat.status == 'available' %}/checkin/{{ id }}{% else %}/free/{{ id }}{% endif %}">
+        <p class="text-lg font-semibold">Seat {{ seat.id }}</p>
+        <form method="POST" action="{% if seat.status == 'available' %}/checkin/{{ seat.id }}{% else %}/free/{{ seat.id }}{% endif %}">
           <button class="mt-2 px-4 py-2 text-white rounded 
                          {% if seat.status == 'available' %}bg-green-600{% else %}bg-red-600{% endif %}">
             {% if seat.status == 'available' %}Check In{% else %}Free{% endif %}
