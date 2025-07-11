@@ -1,4 +1,4 @@
-=<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,19 +8,50 @@
 <body class="bg-gray-100 p-6">
   <h1 class="text-2xl font-bold mb-4 text-center">📚 Library Seat Map</h1>
 
-  <div class="grid grid-cols-6 gap-4 max-w-4xl mx-auto">
+  <div id="seats" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
     {% for seat in seats %}
-      <div class="p-4 rounded-lg shadow text-center 
-                  {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}">
+      <div 
+        class="p-4 rounded-lg shadow text-center cursor-pointer seat-box {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}" 
+        data-id="{{ seat.id }}" 
+        data-status="{{ seat.status }}"
+      >
         <p class="text-lg font-semibold">Seat {{ seat.id }}</p>
-        <form method="POST" action="{% if seat.status == 'available' %}/checkin/{{ seat.id }}{% else %}/free/{{ seat.id }}{% endif %}">
-          <button class="mt-2 px-4 py-2 text-white rounded 
-                         {% if seat.status == 'available' %}bg-green-600{% else %}bg-red-600{% endif %}">
-            {% if seat.status == 'available' %}Check In{% else %}Free{% endif %}
-          </button>
-        </form>
+        <button 
+          class="mt-2 px-4 py-2 text-white rounded seat-btn 
+                 {% if seat.status == 'available' %}bg-green-600{% else %}bg-red-600{% endif %}">
+          {% if seat.status == 'available' %}Check In{% else %}Free{% endif %}
+        </button>
       </div>
     {% endfor %}
   </div>
+
+  <script>
+    document.querySelectorAll(".seat-box").forEach(box => {
+      box.querySelector(".seat-btn").addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const seatId = box.dataset.id;
+        const currentStatus = box.dataset.status;
+
+        const endpoint = currentStatus === "available" ? `/checkin/${seatId}` : `/free/${seatId}`;
+        const res = await fetch(endpoint, { method: "POST" });
+
+        if (res.ok) {
+          // Toggle status
+          const newStatus = currentStatus === "available" ? "occupied" : "available";
+          box.dataset.status = newStatus;
+
+          // Update colors
+          box.classList.toggle("bg-green-200");
+          box.classList.toggle("bg-red-300");
+
+          const btn = box.querySelector(".seat-btn");
+          btn.classList.toggle("bg-green-600");
+          btn.classList.toggle("bg-red-600");
+          btn.innerText = newStatus === "available" ? "Check In" : "Free";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
