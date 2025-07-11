@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Seat Map</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-2xl font-bold mb-4 text-center">📚 Library Seat Map</h1>
+
+  <div class="grid grid-cols-6 gap-4 max-w-4xl mx-auto">
+    {% for id, seat in seats.items() %}
+      <div class="p-4 rounded-lg shadow text-center 
+                  {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}">
+        <p class="text-lg font-semibold">Seat {{ id }}</p>
+        <form method="POST" action="{% if seat.status == 'available' %}/checkin/{{ id }}{% else %}/free/{{ id }}{% endif %}">
+          <button class="mt-2 px-4 py-2 text-white rounded 
+                         {% if seat.status == 'available' %}bg-green-600{% else %}bg-red-600{% endif %}">
+            {% if seat.status == 'available' %}Check In{% else %}Free{% endif %}
+          </button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

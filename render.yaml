@@ -1,0 +1,8 @@
+# render.yaml
+services:
+  - type: web
+    name: library-seats-app
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: gunicorn app:app

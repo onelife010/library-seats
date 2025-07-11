@@ -1,0 +1,242 @@
+{
+    "1": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:11.234328"
+    },
+    "2": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "3": {
+        "status": "available",
+        "last_updated": "2025-07-11 13:18:43.114302"
+    },
+    "4": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:24:18.601008"
+    },
+    "5": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:24:21.322723"
+    },
+    "6": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "7": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:13.227477"
+    },
+    "8": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:14.646635"
+    },
+    "9": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:24:06.733130"
+    },
+    "10": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "11": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:48:50.530910"
+    },
+    "12": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "13": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "14": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:16.185774"
+    },
+    "15": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:17.286647"
+    },
+    "16": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "17": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:48:52.049605"
+    },
+    "18": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "19": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "20": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "21": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "22": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:18.809634"
+    },
+    "23": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "24": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "25": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "26": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "27": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "28": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "29": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:26.627607"
+    },
+    "30": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "31": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "32": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "33": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:24:03.695129"
+    },
+    "34": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "35": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "36": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:29.131967"
+    },
+    "37": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "38": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "39": {
+        "status": "available",
+        "last_updated": "2025-07-11 13:18:18.823918"
+    },
+    "40": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "41": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "42": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "43": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "44": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "45": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "46": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "47": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:48:54.093469"
+    },
+    "48": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "49": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "50": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "51": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "52": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "53": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "54": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "55": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "56": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "57": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "58": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "59": {
+        "status": "available",
+        "last_updated": ""
+    },
+    "60": {
+        "status": "occupied",
+        "last_updated": "2025-07-11 13:23:45.750046"
+    }
+}
