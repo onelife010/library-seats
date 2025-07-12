@@ -1,69 +1,84 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-import json
+from flask import Flask, render_template, request, redirect, url_for
+import sqlite3
 import os
 
 app = Flask(__name__)
+PASSWORD = "yourpassword"  # Set your reset password here
 
-SEAT_FILE = "seats.json"
-RESET_PASSWORD = os.environ.get("RESET_PASSWORD", "admin123")  # Secure default
-
-
-# Load seat data from JSON
-def load_seats():
-    if not os.path.exists(SEAT_FILE):
-        return []
-    try:
-        with open(SEAT_FILE, "r") as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        return []
+DB_PATH = 'seats.db'
 
 
-# Save seat data to JSON
-def save_seats(seats):
-    with open(SEAT_FILE, "w") as f:
-        json.dump(seats, f, indent=2)
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS seats (
+            id INTEGER PRIMARY KEY,
+            status TEXT NOT NULL
+        )
+    ''')
+    # Insert seats if table is empty
+    c.execute('SELECT COUNT(*) FROM seats')
+    if c.fetchone()[0] == 0:
+        for i in range(1, 61):
+            c.execute('INSERT INTO seats (id, status) VALUES (?, ?)', (i, 'available'))
+    conn.commit()
+    conn.close()
+
+
+def get_seats():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('SELECT id, status FROM seats')
+    seats = [{'id': row[0], 'status': row[1]} for row in c.fetchall()]
+    conn.close()
+    return seats
+
+
+def update_seat(seat_id, status):
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('UPDATE seats SET status = ? WHERE id = ?', (status, seat_id))
+    conn.commit()
+    conn.close()
+
+
+def reset_all_seats():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('UPDATE seats SET status = "available"')
+    conn.commit()
+    conn.close()
 
 
 @app.route('/')
 def index():
-    seats = load_seats()
+    seats = get_seats()
     return render_template('index.html', seats=seats)
 
 
 @app.route('/checkin/<int:seat_id>', methods=['POST'])
 def checkin(seat_id):
-    seats = load_seats()
-    for seat in seats:
-        if seat['id'] == seat_id:
-            seat['status'] = 'occupied'
-            save_seats(seats)
-            return jsonify({'success': True}), 200
-    return jsonify({'success': False, 'message': 'Seat not found'}), 404
+    update_seat(seat_id, 'occupied')
+    return ('', 204)
 
 
 @app.route('/free/<int:seat_id>', methods=['POST'])
 def free(seat_id):
-    seats = load_seats()
-    for seat in seats:
-        if seat['id'] == seat_id:
-            seat['status'] = 'available'
-            save_seats(seats)
-            return jsonify({'success': True}), 200
-    return jsonify({'success': False, 'message': 'Seat not found'}), 404
+    update_seat(seat_id, 'available')
+    return ('', 204)
 
 
-@app.route("/reset", methods=["POST"])
+@app.route('/reset', methods=['POST'])
 def reset():
-    password = request.form.get("password")
-    if password == RESET_PASSWORD:
-        seats = [{"id": i, "status": "available"} for i in range(1, 61)]  # Reset 60 seats
-        save_seats(seats)
-        return redirect("/")
+    password = request.form.get('password')
+    if password == PASSWORD:
+        reset_all_seats()
+        return redirect(url_for('index'))
     else:
-        return "Incorrect password", 403
+        return "Unauthorized", 403
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    init_db()
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
