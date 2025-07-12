@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
+import threading
+import schedule
+import time
+from datetime import datetime
 
 app = Flask(__name__)
-PASSWORD = "yourpassword"  # Set your reset password here
+PASSWORD = "yourpassword"  # Set your admin password here
 DB_PATH = 'seats.db'
+
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
@@ -18,10 +23,11 @@ def init_db():
     # Insert 72 seats if table is empty
     c.execute('SELECT COUNT(*) FROM seats')
     if c.fetchone()[0] == 0:
-        for i in range(1, 73):  # 🟢 Change: set 72 seats
+        for i in range(1, 73):
             c.execute('INSERT INTO seats (id, status) VALUES (?, ?)', (i, 'available'))
     conn.commit()
     conn.close()
+
 
 def get_seats():
     conn = sqlite3.connect(DB_PATH)
@@ -31,6 +37,7 @@ def get_seats():
     conn.close()
     return seats
 
+
 def update_seat(seat_id, status):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -38,27 +45,36 @@ def update_seat(seat_id, status):
     conn.commit()
     conn.close()
 
+
 def reset_all_seats():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('UPDATE seats SET status = "available"')
     conn.commit()
     conn.close()
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Seats reset.")
+
 
 @app.route('/')
 def index():
+    now = datetime.now()
+    if now.hour >= 20:  # After 8:00 PM
+        return render_template('closed.html')
     seats = get_seats()
     return render_template('index.html', seats=seats)
+
 
 @app.route('/checkin/<int:seat_id>', methods=['POST'])
 def checkin(seat_id):
     update_seat(seat_id, 'occupied')
     return ('', 204)
 
+
 @app.route('/free/<int:seat_id>', methods=['POST'])
 def free(seat_id):
     update_seat(seat_id, 'available')
     return ('', 204)
+
 
 @app.route('/reset', methods=['POST'])
 def reset():
@@ -69,6 +85,16 @@ def reset():
     else:
         return "Unauthorized", 403
 
+
+# 🔁 Background thread to schedule daily reset at 8 PM
+def run_scheduler():
+    schedule.every().day.at("1:45").do(reset_all_seats)
+    while True:
+        schedule.run_pending()
+        time.sleep(30)
+
+
 if __name__ == "__main__":
     init_db()
+    threading.Thread(target=run_scheduler, daemon=True).start()
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
