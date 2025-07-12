@@ -88,7 +88,7 @@ def reset():
 
 # 🔁 Background thread to schedule daily reset at 8 PM
 def run_scheduler():
-    schedule.every().day.at("1:45").do(reset_all_seats)
+    schedule.every().day.at("13:50").do(reset_all_seats)
     while True:
         schedule.run_pending()
         time.sleep(30)
