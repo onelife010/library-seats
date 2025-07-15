@@ -7,9 +7,8 @@ import time
 from datetime import datetime
 
 app = Flask(__name__)
-PASSWORD = "admin@123"  # ✅ Updated admin password
+PASSWORD = "admin@123"
 DB_PATH = 'seats.db'
-
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
@@ -20,14 +19,12 @@ def init_db():
             status TEXT NOT NULL
         )
     ''')
-    # Insert 72 seats if table is empty
     c.execute('SELECT COUNT(*) FROM seats')
     if c.fetchone()[0] == 0:
         for i in range(1, 73):
             c.execute('INSERT INTO seats (id, status) VALUES (?, ?)', (i, 'available'))
     conn.commit()
     conn.close()
-
 
 def get_seats():
     conn = sqlite3.connect(DB_PATH)
@@ -37,14 +34,12 @@ def get_seats():
     conn.close()
     return seats
 
-
 def update_seat(seat_id, status):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute('UPDATE seats SET status = ? WHERE id = ?', (status, seat_id))
     conn.commit()
     conn.close()
-
 
 def reset_all_seats():
     conn = sqlite3.connect(DB_PATH)
@@ -54,7 +49,6 @@ def reset_all_seats():
     conn.close()
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Seats reset.")
 
-
 @app.route('/')
 def index():
     now = datetime.now()
@@ -63,36 +57,31 @@ def index():
     seats = get_seats()
     return render_template('index.html', seats=seats)
 
-
 @app.route('/checkin/<int:seat_id>', methods=['POST'])
 def checkin(seat_id):
     update_seat(seat_id, 'occupied')
     return ('', 204)
-
 
 @app.route('/free/<int:seat_id>', methods=['POST'])
 def free(seat_id):
     update_seat(seat_id, 'available')
     return ('', 204)
 
-
 @app.route('/reset', methods=['POST'])
 def reset():
     password = request.form.get('password')
     if password == PASSWORD:
         reset_all_seats()
-        return redirect(url_for('index'))  # ✅ Redirect to index on success
+        return redirect(url_for('index'))
     else:
-        return "Unauthorized", 403  # ❌ Wrong password
+        seats = get_seats()
+        return render_template('index.html', seats=seats, error="Incorrect admin password. Please try again.")
 
-
-# 🔁 Background thread to schedule daily reset at 8 PM
 def run_scheduler():
     schedule.every().day.at("20:00").do(reset_all_seats)
     while True:
         schedule.run_pending()
         time.sleep(30)
-
 
 if __name__ == "__main__":
     init_db()
