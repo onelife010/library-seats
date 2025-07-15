@@ -2,58 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Library Seat Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📚 APNI LIBRARY BIN</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-6">
-  <h1 class="text-2xl font-bold mb-2 text-center">📚 APNI LIBRARAY BIN (Library Seat Map)</h1>
+<body class="text-gray-800">
 
-  <p class="text-center mb-4 font-semibold text-gray-700 leading-relaxed px-2">
-    🙏 <strong>Dear Visitor,</strong> please help us make the best use of library space. When you enter the library, tap your seat to mark it. When you're done and leaving, tap again to unmark it.
-    <br>
-    This simple action ensures others can find a free seat and make the most of their learning time. Thank you for your cooperation! 🙌
-    <br><br>
-    📢 <strong>प्रिय आगंतुक,</strong> कृपया पुस्तकालय की सीटों का सर्वोत्तम उपयोग सुनिश्चित करें। जब आप पुस्तकालय में प्रवेश करें तो अपनी सीट को टैप करके चिन्हित करें। जब आप पुस्तकालय छोड़ें तो सीट को टैप करके खाली करें।
-    <br>
-    यह छोटी सी क्रिया दूसरों को सीखने का बेहतर अवसर प्रदान करती है। आपके सहयोग के लिए धन्यवाद! 💡
-  </p>
+  <!-- 🔝 HEADER -->
+  <header class="bg-blue-900 text-white py-6 shadow-md relative">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col items-center space-y-4">
 
-  <!-- 🔲 Seat Grid -->
-  <div id="seats" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
-    {% for seat in seats %}
-      <div class="p-4 rounded-lg shadow text-center cursor-pointer seat-box 
-                  {% if seat.status == 'available' %}bg-green-200{% else %}bg-red-300{% endif %}" 
-           data-id="{{ seat.id }}" data-status="{{ seat.status }}">
-        <p class="text-lg font-semibold">Seat {{ seat.id }}</p>
-        <p class="mt-2 text-md font-bold 
-                  {% if seat.status == 'available' %}text-green-700{% else %}text-red-700{% endif %}">
-          {% if seat.status == 'available' %}Seat Available{% else %}Seat Not Available{% endif %}
-        </p>
+      <!-- 📛 Library Name -->
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-center">📚 APNI LIBRARY BIN</h1>
+
+      <!-- 👩‍🏫 Avatars -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mt-4 px-2">
+        <!-- Female Avatar -->
+        <div class="flex items-center space-x-3">
+          <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full" alt="Female">
+          <span class="bg-pink-100 text-pink-800 px-4 py-2 rounded-full text-sm shadow font-semibold">How do I use this?</span>
+        </div>
+        <!-- Male Avatar -->
+        <div class="flex items-center space-x-3">
+          <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full" alt="Male">
+          <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm shadow font-semibold text-center">Click the "Click Me" button below! 👇</span>
+        </div>
       </div>
-    {% endfor %}
-  </div>
 
-  <!-- ❗ Error Message if Password is Wrong -->
-  {% if error %}
-    <div class="max-w-md mx-auto mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded shadow">
-      ⚠️ {{ error }}
+      <!-- CTA Button -->
+      <button onclick="document.getElementById('footer-message').scrollIntoView({ behavior: 'smooth' })"
+              class="mt-4 px-6 py-2 bg-white text-blue-900 font-semibold rounded-lg shadow hover:bg-gray-100 transition text-base sm:text-lg">
+        📖 Click Me
+      </button>
     </div>
-  {% endif %}
 
-  <!-- 🔐 Admin Reset Form -->
-  <form action="/reset" method="POST" 
-        class="max-w-md mx-auto mt-6 p-4 bg-white rounded shadow"
-        onsubmit="return confirm('Are you sure you want to reset all seats?');">
-    <label for="password" class="block mb-2 font-semibold">🔒 Admin Password to Reset:</label>
-    <input type="password" name="password" required placeholder="Enter admin password"
-           class="w-full p-2 border border-gray-300 rounded mb-3 focus:outline-none focus:ring focus:border-blue-500">
-    <button type="submit" 
-            class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition">
-      Reset All Seats
-    </button>
-  </form>
+    <!-- 🔐 Admin Reset Form (Top Right) -->
+    <form action="/reset" method="POST"
+          class="absolute top-4 right-4 bg-white text-gray-800 p-2 rounded shadow-lg flex items-center space-x-2 text-sm"
+          onsubmit="return confirm('Are you sure you want to reset all seats?');">
+      <input type="password" name="password" required placeholder="Admin password"
+             class="p-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <button type="submit"
+              class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">
+        Reset
+      </button>
+    </form>
+  </header>
 
-  <!-- ✅ Seat Interaction Script -->
+  <!-- 🪑 SEAT GRID -->
+  <main class="bg-gray-100 py-8 px-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+      {% for seat in seats %}
+        <div class="p-4 rounded-lg shadow text-center cursor-pointer seat-box transition-all duration-300
+                    {% if seat.status == 'available' %}bg-green-100{% else %}bg-red-700{% endif %}" 
+             data-id="{{ seat.id }}" data-status="{{ seat.status }}">
+          <p class="text-base sm:text-lg font-semibold">Seat {{ seat.id }}</p>
+          <p class="mt-2 text-sm sm:text-md font-bold 
+                    {% if seat.status == 'available' %}text-green-700{% else %}text-white{% endif %}">
+            {% if seat.status == 'available' %}Seat Available{% else %}Seat Not Available{% endif %}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <!-- ✅ TOGGLE SCRIPT -->
   <script>
     document.querySelectorAll(".seat-box").forEach(box => {
       box.addEventListener("click", async () => {
@@ -65,18 +78,47 @@
         if (res.ok) {
           const newStatus = currentStatus === "available" ? "occupied" : "available";
           box.dataset.status = newStatus;
-
-          // Update styles
-          box.classList.toggle("bg-green-200");
-          box.classList.toggle("bg-red-300");
-
+          box.classList.toggle("bg-green-100");
+          box.classList.toggle("bg-red-700");
           const statusText = box.querySelector("p:nth-child(2)");
           statusText.textContent = newStatus === "available" ? "Seat Available" : "Seat Not Available";
           statusText.classList.toggle("text-green-700");
-          statusText.classList.toggle("text-red-700");
+          statusText.classList.toggle("text-white");
         }
       });
     });
   </script>
+
+  <!-- 📢 FOOTER MESSAGE -->
+  <footer id="footer-message" class="bg-blue-900 text-white py-10 px-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+      
+      <!-- English Section -->
+      <div class="space-y-3 bg-blue-800 p-5 rounded-lg shadow">
+        <h3 class="text-lg sm:text-xl font-bold border-b border-blue-300 pb-2">📘 How to Use (English)</h3>
+        <ul class="list-disc pl-5 text-sm sm:text-base text-blue-100 space-y-2">
+          <li>✔️ Mark your seat when you enter the library and unmark when you leave.</li>
+          <li>🚫 Do NOT mark/unmark seats of others. This causes mismatch with reality.</li>
+          <li>😊 Enjoy your learning and help others find a seat.</li>
+          <li>🔐 This app is for APNI LIBRARY BIN family only. Don't share it publicly.</li>
+          <li>🙌 Your small efforts matter. Let’s support each other’s learning journey!</li>
+        </ul>
+      </div>
+
+      <!-- Hindi Section -->
+      <div class="space-y-3 bg-blue-800 p-5 rounded-lg shadow">
+        <h3 class="text-lg sm:text-xl font-bold border-b border-blue-300 pb-2">📕 उपयोग कैसे करें (हिंदी)</h3>
+        <ul class="list-disc pl-5 text-sm sm:text-base text-blue-100 space-y-2">
+          <li>✔️ लाइब्रेरी में प्रवेश करते समय अपनी सीट को चिह्नित करें और बाहर निकलते समय अनचिह्नित करें।</li>
+          <li>🚫 कृपया किसी और की सीट को चिन्हित/अनचिह्नित न करें। इससे डेटा गलत हो जाता है।</li>
+          <li>😊 अपने अध्ययन का आनंद लें और दूसरों को सीट पाने में मदद करें।</li>
+          <li>🔐 यह ऐप केवल APNI LIBRARY BIN परिवार के लिए है। इसे दूसरों के साथ साझा न करें।</li>
+          <li>🙌 आपका छोटा सहयोग बहुत मायने रखता है। आइए मिलकर सीखने का माहौल बनाएँ!</li>
+        </ul>
+      </div>
+
+    </div>
+  </footer>
+
 </body>
 </html>
