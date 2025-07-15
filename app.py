@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 
 app = Flask(__name__)
-PASSWORD = "yourpassword"  # Set your admin password here
+PASSWORD = "admin@123"  # ✅ Updated admin password
 DB_PATH = 'seats.db'
 
 
@@ -81,9 +81,9 @@ def reset():
     password = request.form.get('password')
     if password == PASSWORD:
         reset_all_seats()
-        return redirect(url_for('index'))
+        return redirect(url_for('index'))  # ✅ Redirect to index on success
     else:
-        return "Unauthorized", 403
+        return "Unauthorized", 403  # ❌ Wrong password
 
 
 # 🔁 Background thread to schedule daily reset at 8 PM

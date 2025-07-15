@@ -6,7 +6,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-  <h1 class="text-2xl font-bold mb-2 text-center">📚 APNI LIBRARAY BIN(Library Seat Map)</h1>
+  <h1 class="text-2xl font-bold mb-2 text-center">📚 APNI LIBRARAY BIN (Library Seat Map)</h1>
 
   <p class="text-center mb-4 font-semibold text-gray-700 leading-relaxed px-2">
     🙏 <strong>Dear Visitor,</strong> please help us make the best use of library space. When you enter the library, tap your seat to mark it. When you're done and leaving, tap again to unmark it.
@@ -18,6 +18,7 @@
     यह छोटी सी क्रिया दूसरों को सीखने का बेहतर अवसर प्रदान करती है। आपके सहयोग के लिए धन्यवाद! 💡
   </p>
 
+  <!-- 🔲 Seat Grid -->
   <div id="seats" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
     {% for seat in seats %}
       <div class="p-4 rounded-lg shadow text-center cursor-pointer seat-box 
@@ -32,12 +33,20 @@
     {% endfor %}
   </div>
 
-  <form action="/reset" method="POST" class="max-w-md mx-auto mt-6 p-4 bg-white rounded shadow">
+  <!-- 🔐 Admin Reset Form -->
+  <form action="/reset" method="POST" 
+        class="max-w-md mx-auto mt-6 p-4 bg-white rounded shadow"
+        onsubmit="return confirm('Are you sure you want to reset all seats?');">
     <label for="password" class="block mb-2 font-semibold">🔒 Admin Password to Reset:</label>
-    <input type="password" name="password" required class="w-full p-2 border rounded mb-3">
-    <button type="submit" class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">Reset All Seats</button>
+    <input type="password" name="password" required placeholder="Enter admin password"
+           class="w-full p-2 border border-gray-300 rounded mb-3 focus:outline-none focus:ring focus:border-blue-500">
+    <button type="submit" 
+            class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition">
+      Reset All Seats
+    </button>
   </form>
 
+  <!-- ✅ Seat Interaction Script -->
   <script>
     document.querySelectorAll(".seat-box").forEach(box => {
       box.addEventListener("click", async () => {
